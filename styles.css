@@ -1,0 +1,63 @@
+/* styles.css */
+
+/* Global Styles */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* File Explorer Styles */
+#fileExplorer {
+    overflow-y: auto;
+    max-height: 70vh;
+}
+
+/* File and Folder Items */
+#fileList li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#fileList li:hover {
+    background-color: rgba(203, 166, 247, 0.2);
+    transform: scale(1.02);
+    border-radius: 0.375rem;
+}
+
+/* File Icons */
+.file-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Editor Styles */
+textarea#editor {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: none;
+}
+
+/* Particles Effect */
+#particles div {
+    animation: float 3s ease-in-out infinite;
+    opacity: 0.8;
+    position: absolute;
+    pointer-events: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(203, 166, 247, 0.5);
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+    }
+    50% {
+        transform: translateY(-10px) translateX(5px);
+    }
+}
