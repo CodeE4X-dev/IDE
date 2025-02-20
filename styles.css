@@ -53,6 +53,22 @@ textarea#editor {
     background-color: rgba(203, 166, 247, 0.5);
 }
 
+.notification.info {
+    background-color: #3b82f6; /* Biru */
+    color: #fff;
+}
+
+.notification.success {
+    background-color: #10b981; /* Hijau */
+    color: #fff;
+}
+
+.notification.error {
+    background-color: #ef4444; /* Merah */
+    color: #fff;
+}
+
+
 @keyframes float {
     0%, 100% {
         transform: translateY(0) translateX(0);
