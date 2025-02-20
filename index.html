@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced IDE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind Configuration for dark mode
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#1e1e2e',
+                        card: '#2a2a40',
+                        accent: '#cba6f7',
+                    },
+                },
+            },
+            darkMode: 'class',
+        };
+    </script>
+</head>
+<body class="dark bg-background text-white">
+    <div id="app" class="p-4">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-xl font-bold">Advanced IDE</h1>
+            <div class="space-x-2">
+                <button id="newFile" class="bg-accent p-2 rounded-lg hover:scale-105 transition-all">New File</button>
+                <button id="saveFile" class="bg-accent p-2 rounded-lg hover:scale-105 transition-all">Save File</button>
+                <button id="removeFile" class="bg-accent p-2 rounded-lg hover:scale-105 transition-all">Remove File</button>
+            </div>
+        </div>
+
+        <div class="flex space-x-4">
+            <!-- File List -->
+            <div id="fileList" class="w-1/4 bg-card rounded-lg p-2">
+                <h2 class="text-lg font-semibold mb-2">Files</h2>
+                <ul id="files" class="space-y-1">
+                    <!-- Dynamically added file names -->
+                </ul>
+            </div>
+
+            <!-- Editor -->
+            <div class="w-3/4 bg-card rounded-lg p-4 relative">
+                <h2 class="text-lg font-semibold mb-2">Editor</h2>
+                <textarea id="editor" class="w-full h-80 bg-transparent text-white p-2 border border-accent rounded-lg" placeholder="Start coding..."></textarea>
+
+                <!-- Particles -->
+                <div class="absolute inset-0 pointer-events-none">
+                    <div class="w-2 h-2 bg-accent rounded-full absolute animate-pulse" style="top: 10%; left: 20%;"></div>
+                    <div class="w-2 h-2 bg-accent rounded-full absolute animate-pulse" style="top: 50%; left: 70%;"></div>
+                    <div class="w-2 h-2 bg-accent rounded-full absolute animate-pulse" style="top: 80%; left: 40%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const newFileButton = document.getElementById('newFile');
+        const saveFileButton = document.getElementById('saveFile');
+        const removeFileButton = document.getElementById('removeFile');
+        const fileList = document.getElementById('files');
+        const editor = document.getElementById('editor');
+
+        let files = JSON.parse(localStorage.getItem('files')) || {};
+        let currentFile = localStorage.getItem('currentFile') || null;
+
+        // Initialize editor and file list
+        updateFileList();
+        if (currentFile && files[currentFile]) {
+            editor.value = files[currentFile];
+        }
+
+        // Create a new file
+        newFileButton.addEventListener('click', () => {
+            const fileName = prompt('Enter file name:');
+            if (fileName && !files[fileName]) {
+                files[fileName] = '';
+                currentFile = fileName;
+                saveToLocalStorage();
+                updateFileList();
+                editor.value = '';
+                alert(`File "${fileName}" created.`);
+            } else {
+                alert('File already exists or invalid name.');
+            }
+        });
+
+        // Save current file
+        saveFileButton.addEventListener('click', () => {
+            if (currentFile) {
+                files[currentFile] = editor.value;
+                saveToLocalStorage();
+                alert(`File "${currentFile}" saved.`);
+            } else {
+                alert('No file selected.');
+            }
+        });
+
+        // Remove a file
+        removeFileButton.addEventListener('click', () => {
+            if (currentFile && confirm(`Are you sure you want to delete "${currentFile}"?`)) {
+                delete files[currentFile];
+                currentFile = null;
+                saveToLocalStorage();
+                editor.value = '';
+                updateFileList();
+                alert('File deleted.');
+            }
+        });
+
+        // Update file list UI
+        function updateFileList() {
+            fileList.innerHTML = '';
+            for (const fileName in files) {
+                const li = document.createElement('li');
+                li.textContent = fileName;
+                li.className = 'p-2 hover:bg-accent rounded-lg cursor-pointer';
+                li.addEventListener('click', () => {
+                    currentFile = fileName;
+                    editor.value = files[fileName];
+                    saveToLocalStorage();
+                });
+                fileList.appendChild(li);
+            }
+        }
+
+        // Save data to localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('files', JSON.stringify(files));
+            localStorage.setItem('currentFile', currentFile);
+        }
+    </script>
+</body>
+</html>
